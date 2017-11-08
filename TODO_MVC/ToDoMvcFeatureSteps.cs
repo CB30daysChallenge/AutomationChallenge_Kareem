@@ -1,15 +1,21 @@
 ﻿using System;
 using TechTalk.SpecFlow;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support;
+using OpenQA.Selenium.Support.UI;
 
 namespace TODO_MVC
 {
     [Binding]
     public class ToDoMvcFeatureSteps
     {
-        [Given(@"I am navigated to the TODO MVC Landing page")]
+		IWebDriver driver;
+		[Given(@"I am navigated to the TODO MVC Landing page")]
         public void GivenIAmNavigatedToTheTODOMVCLandingPage()
         {
-            //ScenarioContext.Current.Pending();
+			driver = new ChromeDriver();
+			driver.Navigate().GoToUrl("http://todomvc.com/examples/angularjs/#/");
         }
         
         [Given(@"I am on the TODO MVC Landing page")]
@@ -95,24 +101,55 @@ namespace TODO_MVC
 		[Then(@"I see a title as ""(.*)""")]
         public void ThenISeeATitleAs(string p0)
         {
+			WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, 15));
+			wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='header']/h1")));
+			IWebElement Title = driver.FindElement(By.XPath("//*[@id='header']/h1"));
+							
+			if (Title.Text=="todos")
+			{
+				Console.WriteLine("Title found as expected; Test Passed");
+				
+			}
+			else
+			{
+				Console.WriteLine("Title not found; Test Failed");
+			}
+		
 			//ScenarioContext.Current.Pending();
 		}
 
 		[Then(@"I see a text box with text as ""(.*)""")]
         public void ThenISeeATextBoxWithTextAs(string p0)
         {
+			WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, 15));
+			wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='new-todo']")));
+			IWebElement Textbox = driver.FindElement(By.XPath("//*[@id='new-todo']"));
+			
 			//ScenarioContext.Current.Pending();
 		}
 
 		[Then(@"I see footer text as ""(.*)""")]
         public void ThenISeeFooterTextAs(string p0)
         {
+			WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, 15));
+			wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='info']/p[1]")));
+			IWebElement FooterText = driver.FindElement(By.XPath("//*[@id='info']/p[1]"));
+
 			//ScenarioContext.Current.Pending();
 		}
 
 		[Then(@"I see a footer links as")]
         public void ThenISeeAFooterLinksAs(Table table)
         {
+			WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, 15));
+			wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='info']/p[2]/a[1]")));
+			IWebElement Footerlink1 = driver.FindElement(By.XPath("//*[@id='info']/p[2]/a[1]"));
+			IWebElement Footerlink2 = driver.FindElement(By.XPath("//*[@id='info']/p[2]/a[2]"));
+			IWebElement Footerlink3 = driver.FindElement(By.XPath("//*[@id='info']/p[2]/a[3]"));
+			IWebElement Footerlink4 = driver.FindElement(By.XPath("//*[@id='info']/p[2]/a[4]"));
+			IWebElement Footerlink5 = driver.FindElement(By.XPath("//*[@id='info']/p[3]/a"));
+
+			driver.Quit();
 			//ScenarioContext.Current.Pending();
 		}
 
@@ -216,5 +253,6 @@ namespace TODO_MVC
         {
 			//ScenarioContext.Current.Pending();
 		}
+		
 	}
 }
